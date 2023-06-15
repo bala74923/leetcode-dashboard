@@ -1,0 +1,55 @@
+<!-- result.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+</head>
+<body>
+    <a href="/"> Home</a>
+    <h1>Result Table</h1>
+    <table>
+        <thead>
+            <tr>
+                {% for key in result_table[0].keys() %}  <!-- Assuming all dictionaries have the same keys, using the first dictionary -->
+                <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for dictionary in result_table %}
+            <tr>
+                {% for value in dictionary.values() %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+ <h1>Black List</h1>
+    <h2>These users may not participated or provided invalid ids</h2>
+    {% if black_list %}
+        <table>
+            <thead>
+                <tr>
+                    {% for key in black_list[0].keys() %}  <!-- Assuming all dictionaries have the same keys, using the first dictionary -->
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for dictionary in black_list %}
+                <tr>
+                    {% for value in dictionary.values() %}
+                    <td>{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+      <!-- Display a message if black_list is empty -->
+      <p>No entries in the black list.</p>
+    {% endif %}
+</body>
+</html>

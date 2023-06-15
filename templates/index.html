@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Excel Analysis</title>
+    <style>
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .loading-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 24px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('form').submit(function(e) {
+                e.preventDefault();
+
+                // Show loading overlay and text
+                $('.loading-overlay').show();
+
+                // Serialize the form data
+                var formData = new FormData(this);
+
+                // Send AJAX request
+                $.ajax({
+                    url: '/process',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        // Redirect to the result page
+                        window.location.href = '/result';
+                    },
+                    error: function() {
+                        alert('An error occurred during processing.');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Upload Excel Sheet</h1>
+    <form enctype="multipart/form-data">
+        <label for="contest">Contest Name:</label>
+        <input type="text" id="contest" name="contest" required>
+
+        <label for="column">Column Name:</label>
+        <input type="text" id="column" name="column" required>
+
+        <input type="file" name="file" accept=".xls,.xlsx" required>
+        <input type="submit" value="Process">
+    </form>
+
+    <div class="loading-overlay">
+
+        <div class="loading-text">Processing... approx it takes around 5 mins</div>
+        <div class="loader"></div>
+    </div>
+</body>
+</html>
